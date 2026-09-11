@@ -1,5 +1,6 @@
 const searchForm = document.getElementById("searchForm");
 const cityInput = document.getElementById("cityInput");
+const locationButton = document.getElementById("locationButton");
 
 const statusMessage = document.getElementById("statusMessage");
 const weatherDashboard = document.getElementById("weatherDashboard");
@@ -15,54 +16,58 @@ const rainfall = document.getElementById("rainfall");
 const apparentTemperature = document.getElementById("apparentTemperature");
 const forecastGrid = document.getElementById("forecastGrid");
 
-if (!searchForm || !cityInput || !statusMessage) {
-  console.error("Elemen HTML tidak ditemukan.");
-} else {
-  searchForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const city = cityInput.value.trim();
-
-    if (!city) {
-      showStatus("Masukkan nama kota terlebih dahulu.", "error");
-      return;
-    }
-
-    await loadWeather(city);
-  });
-}
-
 const weatherCodes = {
-  0: ["Cerah", "☀️"],
-  1: ["Cerah berawan", "🌤️"],
-  2: ["Berawan sebagian", "⛅"],
-  3: ["Mendung", "☁️"],
-  45: ["Berkabut", "🌫️"],
-  48: ["Kabut tebal", "🌫️"],
-  51: ["Gerimis ringan", "🌦️"],
-  53: ["Gerimis", "🌦️"],
-  55: ["Gerimis lebat", "🌧️"],
-  61: ["Hujan ringan", "🌦️"],
-  63: ["Hujan", "🌧️"],
-  65: ["Hujan lebat", "🌧️"],
-  80: ["Hujan singkat", "🌦️"],
-  81: ["Hujan", "🌧️"],
-  82: ["Hujan lebat", "⛈️"],
-  95: ["Badai petir", "⛈️"],
-  96: ["Badai petir dan hujan es", "⛈️"],
-  99: ["Badai petir kuat", "⛈️"]
+  0: { label: "Cerah", icon: "☀️" },
+  1: { label: "Cerah berawan", icon: "🌤️" },
+  2: { label: "Berawan sebagian", icon: "⛅" },
+  3: { label: "Mendung", icon: "☁️" },
+  45: { label: "Berkabut", icon: "🌫️" },
+  48: { label: "Kabut tebal", icon: "🌫️" },
+  51: { label: "Gerimis ringan", icon: "🌦️" },
+  53: { label: "Gerimis", icon: "🌦️" },
+  55: { label: "Gerimis lebat", icon: "🌧️" },
+  61: { label: "Hujan ringan", icon: "🌦️" },
+  63: { label: "Hujan", icon: "🌧️" },
+  65: { label: "Hujan lebat", icon: "🌧️" },
+  71: { label: "Salju ringan", icon: "🌨️" },
+  73: { label: "Salju", icon: "❄️" },
+  75: { label: "Salju lebat", icon: "❄️" },
+  80: { label: "Hujan singkat", icon: "🌦️" },
+  81: { label: "Hujan", icon: "🌧️" },
+  82: { label: "Hujan lebat", icon: "⛈️" },
+  95: { label: "Badai petir", icon: "⛈️" },
+  96: { label: "Badai petir dan hujan es", icon: "⛈️" },
+  99: { label: "Badai petir kuat", icon: "⛈️" }
 };
 
 function getWeatherInfo(code) {
-  return weatherCodes[code] || [
-    "Kondisi tidak diketahui",
-    "🌍"
-  ];
+  return weatherCodes[code] || {
+    label: "Kondisi tidak diketahui",
+    icon: "🌍"
+  };
 }
 
 function showStatus(message, type = "") {
   statusMessage.textContent = message;
   statusMessage.className = `status-message ${type}`;
+}
+
+function setLoading() {
+  showStatus("Sedang mengambil data cuaca...");
+  weatherDashboard.classList.add("hidden");
+}
+
+function formatDate(dateString) {
+  return new Intl.DateTimeFormat("id-ID", {
+    dateStyle: "full",
+    timeStyle: "short"
+  }).format(new Date(dateString));
+}
+
+function formatDay(dateString) {
+  return new Intl.DateTimeFormat("id-ID", {
+    weekday: "short"
+  }).format(new Date(dateString));
 }
 
 async function searchLocation(city) {
@@ -78,7 +83,7 @@ async function searchLocation(city) {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error("API pencarian kota gagal.");
+    throw new Error("Gagal mencari kota.");
   }
 
   const data = await response.json();
@@ -90,7 +95,7 @@ async function searchLocation(city) {
   return data.results[0];
 }
 
-async function getWeather(latitude, longitude, timezone) {
+async function fetchWeather(latitude, longitude, timezone = "auto") {
   const url = new URL(
     "https://api.open-meteo.com/v1/forecast"
   );
@@ -100,57 +105,45 @@ async function getWeather(latitude, longitude, timezone) {
 
   url.searchParams.set(
     "current",
-    "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m"
+    [
+      "temperature_2m",
+      "relative_humidity_2m",
+      "apparent_temperature",
+      "precipitation",
+      "weather_code",
+      "wind_speed_10m"
+    ].join(",")
   );
 
   url.searchParams.set(
     "daily",
-    "weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max"
+    [
+      "weather_code",
+      "temperature_2m_max",
+      "temperature_2m_min",
+      "precipitation_probability_max"
+    ].join(",")
   );
 
   url.searchParams.set("forecast_days", "5");
-  url.searchParams.set("timezone", timezone || "auto");
+  url.searchParams.set("timezone", timezone);
 
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error("API cuaca gagal diakses.");
+    throw new Error("Gagal mengambil data cuaca.");
   }
 
   return response.json();
 }
 
-async function loadWeather(city) {
-  try {
-    showStatus("Sedang mengambil data cuaca...");
-    weatherDashboard.classList.add("hidden");
+function renderWeather(location, data) {
+  const current = data.current;
+  const units = data.current_units;
+  const daily = data.daily;
+  const currentInfo = getWeatherInfo(current.weather_code);
 
-    const location = await searchLocation(city);
-
-    const weather = await getWeather(
-      location.latitude,
-      location.longitude,
-      location.timezone
-    );
-
-    renderWeather(location, weather);
-  } catch (error) {
-    console.error(error);
-
-    weatherDashboard.classList.add("hidden");
-    showStatus(error.message, "error");
-  }
-}
-
-function renderWeather(location, weather) {
-  const current = weather.current;
-  const units = weather.current_units;
-  const daily = weather.daily;
-
-  const [description, icon] =
-    getWeatherInfo(current.weather_code);
-
-  locationName.textContent = [
+  const fullLocation = [
     location.name,
     location.admin1,
     location.country
@@ -158,15 +151,16 @@ function renderWeather(location, weather) {
     .filter(Boolean)
     .join(", ");
 
+  locationName.textContent = fullLocation;
   locationDate.textContent =
-    `Diperbarui: ${current.time}`;
+    `Diperbarui: ${formatDate(current.time)}`;
 
-  weatherIcon.textContent = icon;
+  weatherIcon.textContent = currentInfo.icon;
 
   temperature.textContent =
     `${Math.round(current.temperature_2m)}${units.temperature_2m}`;
 
-  weatherDescription.textContent = description;
+  weatherDescription.textContent = currentInfo.label;
 
   humidity.textContent =
     `${current.relative_humidity_2m}${units.relative_humidity_2m}`;
@@ -182,15 +176,14 @@ function renderWeather(location, weather) {
 
   forecastGrid.innerHTML = daily.time
     .map((date, index) => {
-      const [dailyDescription, dailyIcon] =
-        getWeatherInfo(daily.weather_code[index]);
+      const dayInfo = getWeatherInfo(daily.weather_code[index]);
 
       return `
         <article class="forecast-card">
-          <h3>${date}</h3>
+          <h3>${formatDay(date)}</h3>
 
           <div class="forecast-icon">
-            ${dailyIcon}
+            ${dayInfo.icon}
           </div>
 
           <strong>
@@ -198,7 +191,7 @@ function renderWeather(location, weather) {
             ${Math.round(daily.temperature_2m_min[index])}°
           </strong>
 
-          <small>${dailyDescription}</small>
+          <small>${dayInfo.label}</small>
 
           <small>
             Hujan:
@@ -212,3 +205,91 @@ function renderWeather(location, weather) {
   statusMessage.classList.add("hidden");
   weatherDashboard.classList.remove("hidden");
 }
+
+async function loadWeatherByCity(city) {
+  try {
+    setLoading();
+
+    const location = await searchLocation(city);
+
+    const weatherData = await fetchWeather(
+      location.latitude,
+      location.longitude,
+      location.timezone || "auto"
+    );
+
+    renderWeather(location, weatherData);
+  } catch (error) {
+    weatherDashboard.classList.add("hidden");
+    showStatus(error.message, "error");
+  }
+}
+
+async function loadWeatherByCoordinates(latitude, longitude) {
+  try {
+    setLoading();
+
+    const weatherData = await fetchWeather(
+      latitude,
+      longitude,
+      "auto"
+    );
+
+    const location = {
+      name: "Lokasi Saya",
+      admin1: "",
+      country: ""
+    };
+
+    renderWeather(location, weatherData);
+  } catch (error) {
+    weatherDashboard.classList.add("hidden");
+    showStatus(
+      "Data cuaca berdasarkan lokasi gagal diambil.",
+      "error"
+    );
+  }
+}
+
+searchForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const city = cityInput.value.trim();
+
+  if (!city) {
+    showStatus(
+      "Masukkan nama kota terlebih dahulu.",
+      "error"
+    );
+    return;
+  }
+
+  loadWeatherByCity(city);
+});
+
+locationButton.addEventListener("click", () => {
+  if (!navigator.geolocation) {
+    showStatus(
+      "Browser tidak mendukung fitur lokasi.",
+      "error"
+    );
+    return;
+  }
+
+  setLoading();
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      loadWeatherByCoordinates(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+    },
+    () => {
+      showStatus(
+        "Izin lokasi ditolak atau lokasi tidak tersedia.",
+        "error"
+      );
+    }
+  );
+});
