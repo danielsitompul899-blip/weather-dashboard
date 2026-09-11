@@ -1,23 +1,161 @@
-<form id="searchForm">
-  <input
-    id="cityInput"
-    type="search"
-    placeholder="Contoh: Jakarta"
-    required>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <button type="submit">
-    Cari Cuaca
-  </button>
-</form>
+  <title>Weather Dashboard</title>
 
-<div id="statusMessage">
-  Masukkan nama kota untuk melihat data cuaca.
-</div>
+  <link rel="stylesheet" href="./style.css">
+</head>
 
-<section id="weatherDashboard" hidden>
-  <h2 id="locationName">-</h2>
-  <p id="weatherDescription">-</p>
-  <strong id="temperature">--°C</strong>
-  <p id="humidity">Kelembapan: --%</p>
-  <p id="windSpeed">Angin: -- km/j</p>
-</section>
+<body>
+
+  <header class="header">
+    <div class="container navbar">
+      <a class="logo" href="#">
+        Weather<span>Dash</span>
+      </a>
+
+      <a
+        class="portfolio"
+        href="https://danielsitompul899-blip.github.io/"
+        target="_blank"
+        rel="noopener">
+        Portfolio
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container hero-content">
+        <p class="eyebrow">Weather Dashboard</p>
+
+        <h1>
+          Cek Cuaca Kota Anda
+        </h1>
+
+        <p>
+          Masukkan nama kota untuk melihat informasi cuaca terkini.
+        </p>
+
+        <form id="searchForm" class="search-form">
+          <input
+            id="cityInput"
+            type="search"
+            placeholder="Contoh: Jakarta"
+            autocomplete="off"
+            required>
+
+          <button type="submit">
+            Cari Cuaca
+          </button>
+        </form>
+
+        <button
+          id="locationButton"
+          class="location-button"
+          type="button">
+          📍 Gunakan Lokasi Saya
+        </button>
+      </div>
+    </section>
+
+    <section class="weather-section">
+      <div class="container">
+
+        <div id="statusMessage" class="status-message">
+          Ketik nama kota, lalu tekan tombol Cari Cuaca.
+        </div>
+
+        <div
+          id="weatherDashboard"
+          class="weather-dashboard hidden">
+
+          <div class="location-header">
+            <div>
+              <p class="eyebrow">Hasil Pencarian</p>
+              <h2 id="locationName">-</h2>
+              <p id="locationDate">-</p>
+            </div>
+
+            <div id="weatherIcon" class="weather-icon">
+              ☀️
+            </div>
+          </div>
+
+          <div class="weather-grid">
+
+            <div class="temperature-card">
+              <span>Suhu Saat Ini</span>
+
+              <strong id="temperature">
+                --°C
+              </strong>
+
+              <p id="weatherDescription">
+                -
+              </p>
+            </div>
+
+            <div class="details-grid">
+
+              <div class="detail-card">
+                <span>💧</span>
+                <small>Kelembapan</small>
+                <strong id="humidity">--%</strong>
+              </div>
+
+              <div class="detail-card">
+                <span>💨</span>
+                <small>Kecepatan Angin</small>
+                <strong id="windSpeed">-- km/j</strong>
+              </div>
+
+              <div class="detail-card">
+                <span>🌧️</span>
+                <small>Curah Hujan</small>
+                <strong id="rainfall">-- mm</strong>
+              </div>
+
+              <div class="detail-card">
+                <span>🌡️</span>
+                <small>Terasa Seperti</small>
+                <strong id="feelsLike">--°C</strong>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="forecast-section">
+            <h2>Prakiraan 5 Hari</h2>
+
+            <div
+              id="forecastGrid"
+              class="forecast-grid">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>
+        <strong>WeatherDash</strong> — Project Portfolio
+      </p>
+
+      <p>
+        Dibuat oleh Daniel Sitompul
+      </p>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
