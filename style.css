@@ -1,7 +1,7 @@
 :root {
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --sky: #eff6ff;
+  --blue: #2563eb;
+  --blue-dark: #1d4ed8;
+  --background: #eff6ff;
   --white: #ffffff;
   --text: #1e293b;
   --muted: #64748b;
@@ -23,12 +23,8 @@ html {
 body {
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text);
-  background: var(--sky);
+  background: var(--background);
   line-height: 1.6;
-}
-
-a {
-  color: inherit;
 }
 
 button,
@@ -36,8 +32,12 @@ input {
   font: inherit;
 }
 
+a {
+  color: inherit;
+}
+
 .container {
-  width: min(1120px, 92%);
+  width: min(1100px, 92%);
   margin: auto;
 }
 
@@ -45,14 +45,14 @@ input {
   display: none !important;
 }
 
-.site-header {
+.header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 20;
   background: rgba(255, 255, 255, 0.96);
   border-bottom: 1px solid var(--border);
   box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
 }
 
 .navbar {
@@ -62,47 +62,50 @@ input {
   justify-content: space-between;
 }
 
-.brand {
-  color: var(--primary-dark);
+.logo {
+  color: var(--blue-dark);
   font-size: 1.5rem;
   font-weight: 900;
   text-decoration: none;
 }
 
-.brand span {
-  color: var(--primary);
+.logo span {
+  color: var(--blue);
 }
 
-.portfolio-link {
-  color: var(--primary-dark);
+.portfolio {
+  color: var(--blue-dark);
   font-weight: 800;
   text-decoration: none;
 }
 
-.portfolio-link:hover {
-  color: var(--primary);
+.portfolio:hover {
+  color: var(--blue);
 }
 
 .hero {
-  min-height: 520px;
+  min-height: 500px;
   display: grid;
   place-items: center;
   color: var(--white);
   background:
-    linear-gradient(rgba(30, 64, 175, 0.8), rgba(30, 64, 175, 0.7)),
+    linear-gradient(
+      rgba(30, 64, 175, 0.85),
+      rgba(37, 99, 235, 0.72)
+    ),
     url("https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=1800&q=85")
     center / cover;
 }
 
 .hero-content {
-  padding: 82px 0;
+  padding: 80px 0;
   text-align: center;
 }
 
 .eyebrow {
   display: inline-block;
-  margin-bottom: 10px;
-  color: var(--primary);
+  margin-bottom: 9px;
+  color: var(--blue);
   font-size: 0.8rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -115,14 +118,14 @@ input {
 
 .hero h1 {
   max-width: 850px;
-  margin: 8px auto 16px;
-  font-size: clamp(2.7rem, 7vw, 5rem);
+  margin: 7px auto 16px;
+  font-size: clamp(2.6rem, 7vw, 5rem);
   line-height: 1.03;
 }
 
 .hero p {
-  max-width: 680px;
-  margin: 0 auto 28px;
+  max-width: 650px;
+  margin: 0 auto 27px;
   color: #dbeafe;
   font-size: 1.1rem;
 }
@@ -139,8 +142,8 @@ input {
   min-height: 50px;
   padding: 0 16px;
   border: 0;
-  border-radius: 11px;
-  outline: 0;
+  border-radius: 10px;
+  outline: none;
   color: var(--text);
 }
 
@@ -148,19 +151,19 @@ input {
   min-height: 50px;
   padding: 0 20px;
   border: 0;
-  border-radius: 11px;
-  background: var(--primary);
+  border-radius: 10px;
+  background: var(--blue);
   color: var(--white);
   font-weight: 800;
   cursor: pointer;
 }
 
 .search-form button:hover {
-  background: var(--primary-dark);
+  background: var(--blue-dark);
 }
 
 .location-button {
-  margin-top: 17px;
+  margin-top: 16px;
   border: 0;
   background: transparent;
   color: #dbeafe;
@@ -173,15 +176,14 @@ input {
 }
 
 .weather-section {
-  padding: 78px 0;
-  background: var(--sky);
+  padding: 75px 0;
 }
 
 .status-message {
   max-width: 800px;
   margin: 0 auto 25px;
   padding: 18px;
-  border-radius: 14px;
+  border-radius: 12px;
   background: var(--white);
   color: var(--muted);
   text-align: center;
@@ -203,8 +205,8 @@ input {
 
 .location-header h2 {
   margin: 5px 0;
-  color: var(--primary-dark);
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: var(--blue-dark);
+  font-size: clamp(2rem, 5vw, 3.1rem);
 }
 
 .location-header p:last-child {
@@ -215,11 +217,10 @@ input {
   font-size: 5rem;
 }
 
-.weather-main {
+.weather-grid {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
   gap: 24px;
-  margin-bottom: 60px;
 }
 
 .temperature-card {
@@ -276,20 +277,18 @@ input {
 .detail-card strong {
   display: block;
   margin-top: 4px;
-  color: var(--primary-dark);
+  color: var(--blue-dark);
   font-size: 1.2rem;
 }
 
-.section-heading {
-  max-width: 700px;
-  margin: 0 auto 30px;
-  text-align: center;
+.forecast-section {
+  margin-top: 60px;
 }
 
-.section-heading h2 {
-  margin: 7px 0;
-  color: var(--primary-dark);
-  font-size: clamp(2rem, 4vw, 2.7rem);
+.forecast-section h2 {
+  margin-bottom: 20px;
+  color: var(--blue-dark);
+  text-align: center;
 }
 
 .forecast-grid {
@@ -300,14 +299,14 @@ input {
 
 .forecast-card {
   padding: 18px 12px;
-  border-radius: 16px;
+  border-radius: 15px;
   background: var(--white);
   text-align: center;
   box-shadow: var(--shadow);
 }
 
 .forecast-card h3 {
-  color: var(--primary-dark);
+  color: var(--blue-dark);
   font-size: 0.95rem;
 }
 
@@ -327,60 +326,20 @@ input {
   font-size: 0.8rem;
 }
 
-.features-section {
-  padding: 78px 0;
-  background: var(--white);
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
-.feature-card {
-  padding: 24px;
-  border-radius: 18px;
-  background: var(--sky);
-  box-shadow: var(--shadow);
-}
-
-.feature-card > span {
-  font-size: 2rem;
-}
-
-.feature-card h3 {
-  margin: 13px 0 7px;
-  color: var(--primary-dark);
-}
-
-.feature-card p {
-  color: var(--muted);
-  font-size: 0.94rem;
-}
-
-.site-footer {
+.footer {
   padding: 30px 0;
   background: var(--dark);
   color: #f8fafc;
   text-align: center;
 }
 
-.site-footer p {
+.footer p {
   margin: 5px 0;
 }
 
-.site-footer a {
-  color: #bfdbfe;
-}
-
-@media (max-width: 950px) {
-  .weather-main {
+@media (max-width: 850px) {
+  .weather-grid {
     grid-template-columns: 1fr;
-  }
-
-  .feature-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .forecast-grid {
@@ -388,7 +347,7 @@ input {
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 600px) {
   .search-form {
     flex-direction: column;
   }
@@ -405,8 +364,10 @@ input {
     font-size: 3.5rem;
   }
 
-  .details-grid,
-  .feature-grid,
+  .details-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .forecast-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -416,13 +377,8 @@ input {
   }
 }
 
-@media (max-width: 430px) {
-  .details-grid,
-  .feature-grid {
+@media (max-width: 420px) {
+  .details-grid {
     grid-template-columns: 1fr;
-  }
-
-  .forecast-grid {
-    grid-template-columns: 1fr 1fr;
   }
 }
