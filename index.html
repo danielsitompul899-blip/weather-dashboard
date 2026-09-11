@@ -1,30 +1,228 @@
-<section class="weather-card">
-  <div class="location-heading">
-    <div>
-      <p class="eyebrow">Lokasi Saat Ini</p>
-      <h2 id="locationName">Surabaya</h2>
-      <p id="locationDate">-</p>
-    </div>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <div class="weather-icon" id="weatherIcon">
-      ☀️
-    </div>
-  </div>
+  <title>WeatherDash — Dashboard Cuaca</title>
 
-  <div class="temperature-box">
-    <strong id="temperature">--°C</strong>
-    <span id="weatherDescription">-</span>
-  </div>
+  <meta
+    name="description"
+    content="Website dashboard cuaca dengan pencarian kota dan prakiraan lima hari."
+  >
 
-  <div class="weather-details">
-    <div>
-      <small>Kelembapan</small>
-      <strong id="humidity">--%</strong>
-    </div>
+  <link rel="stylesheet" href="style.css">
+</head>
 
-    <div>
-      <small>Kecepatan Angin</small>
-      <strong id="windSpeed">-- km/j</strong>
+<body>
+
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="#">
+        Weather<span>Dash</span>
+      </a>
+
+      <a
+        class="portfolio-link"
+        href="https://danielsitompul899-blip.github.io/"
+        target="_blank"
+        rel="noopener">
+        Portfolio
+      </a>
     </div>
-  </div>
-</section>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container hero-content">
+        <p class="eyebrow">Weather Dashboard</p>
+
+        <h1>
+          Cek Cuaca di Kota Anda
+        </h1>
+
+        <p>
+          Masukkan nama kota untuk mengetahui suhu, kondisi cuaca,
+          kelembapan, angin, dan prakiraan cuaca.
+        </p>
+
+        <form class="search-form" id="searchForm">
+          <input
+            id="cityInput"
+            type="search"
+            placeholder="Contoh: Jakarta"
+            autocomplete="off"
+            required>
+
+          <button type="submit">
+            Cari Cuaca
+          </button>
+        </form>
+
+        <button
+          class="location-button"
+          id="locationButton"
+          type="button">
+          📍 Gunakan Lokasi Saya
+        </button>
+      </div>
+    </section>
+
+    <section class="weather-section">
+      <div class="container">
+
+        <div class="status-message" id="statusMessage">
+          Masukkan nama kota untuk melihat data cuaca.
+        </div>
+
+        <div
+          class="weather-dashboard hidden"
+          id="weatherDashboard">
+
+          <div class="location-header">
+            <div>
+              <p class="eyebrow">Lokasi Saat Ini</p>
+              <h2 id="locationName">-</h2>
+              <p id="locationDate">-</p>
+            </div>
+
+            <div
+              class="weather-icon"
+              id="weatherIcon">
+              ☀️
+            </div>
+          </div>
+
+          <div class="weather-main">
+
+            <div class="temperature-card">
+              <span>Suhu Saat Ini</span>
+
+              <strong id="temperature">
+                --°C
+              </strong>
+
+              <p id="weatherDescription">
+                -
+              </p>
+            </div>
+
+            <div class="details-grid">
+
+              <div class="detail-card">
+                <span>💧</span>
+                <small>Kelembapan</small>
+                <strong id="humidity">--%</strong>
+              </div>
+
+              <div class="detail-card">
+                <span>💨</span>
+                <small>Kecepatan Angin</small>
+                <strong id="windSpeed">-- km/j</strong>
+              </div>
+
+              <div class="detail-card">
+                <span>🌧️</span>
+                <small>Curah Hujan</small>
+                <strong id="rainfall">-- mm</strong>
+              </div>
+
+              <div class="detail-card">
+                <span>🌡️</span>
+                <small>Terasa Seperti</small>
+                <strong id="apparentTemperature">--°C</strong>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="forecast-section">
+            <div class="section-heading">
+              <p class="eyebrow">Prakiraan Cuaca</p>
+
+              <h2>Lima Hari ke Depan</h2>
+            </div>
+
+            <div
+              class="forecast-grid"
+              id="forecastGrid">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="features-section">
+      <div class="container">
+
+        <div class="section-heading">
+          <p class="eyebrow">Fitur Project</p>
+
+          <h2>Teknologi yang Digunakan</h2>
+        </div>
+
+        <div class="feature-grid">
+
+          <article class="feature-card">
+            <span>🔎</span>
+            <h3>Pencarian Kota</h3>
+            <p>
+              Mencari lokasi berdasarkan nama kota.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <span>🌦️</span>
+            <h3>Data Cuaca</h3>
+            <p>
+              Menampilkan kondisi cuaca dan prakiraan harian.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <span>📍</span>
+            <h3>Geolocation</h3>
+            <p>
+              Mengambil cuaca berdasarkan lokasi perangkat.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <span>📱</span>
+            <h3>Responsive</h3>
+            <p>
+              Cocok untuk desktop, tablet, dan smartphone.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        <strong>WeatherDash</strong> — Project Portfolio.
+      </p>
+
+      <p>
+        Dibuat oleh
+        <a
+          href="https://danielsitompul899-blip.github.io/"
+          target="_blank"
+          rel="noopener">
+          Daniel Sitompul
+        </a>
+      </p>
+
+      <p>© 2026. Semua hak dilindungi.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
